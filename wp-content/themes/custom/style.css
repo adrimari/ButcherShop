@@ -1,0 +1,268 @@
+
+
+/*-----------------------------------------------*/
+body {
+	font-family: HelveticaNeueLTStd, Candara, Calibri, Arial;
+	font-size: large;
+	margin: 0;
+	color: #ffffff;
+}
+h1 {
+	font-size: 150%;
+}
+h2 {
+	font-size: 130%;
+}
+h3 {
+	font-size: 120%;
+}
+h4{
+	font-size: 110%;
+}
+h5{
+	font-size: 100%;
+}
+h6{
+	font-size: 90%;
+	text-transform: uppercase;
+}
+ul li {
+	font-size: 90%;
+}
+a{
+	color: #ffffff;
+	text-transform: uppercase;
+	text-decoration: none;
+}
+
+.outerWrapper{
+	height: 100%;
+	width: 1350px;
+	margin: 0;
+	padding: 0;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.outerwrapper ul{
+	list-style: none;
+}
+
+.wrapper{
+	width: 50%;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.button{
+	padding: 0.5em 1em;
+	font-size: 80%;
+}
+
+/*------------------Header------------------------*/
+header{
+	background-color: #f7f6f6;
+	height: 22em;
+	width: 100%;
+}
+
+.logo{
+	width: 6em;
+	height: 6em;
+	position: absolute;
+	margin-top: 1em;
+}
+
+.socialMedia {
+	height: 16%;
+}
+
+.socialMedia ul{
+	float: right;
+}
+
+.socialmedia li{
+	float: left;
+	padding: 0.5em 1em;
+}
+
+.login{
+	background: url(./includes/images/layout/login-bg.png) repeat-x;
+}
+
+.mainHeader{
+	clear: both;
+	background: url(./includes/images/header3.jpg) no-repeat;
+	background-size: 100% 100%;
+	width: 100%;
+	height: 68%;
+}
+
+.register{
+	background: url(./includes/images/layout/register-bg.png) repeat-x;
+	float: right;
+	margin: 1em 0em;
+}
+
+/*---------------------Navigation---------------------*/
+
+header nav{
+	height: 12%;
+}
+
+header nav ul{
+	padding: 0;
+	margin-bottom: -0.25em;
+}
+
+header nav li{
+	float: left;
+	display: block;
+	margin-right: 1em;
+	padding-right: 1em;
+	border-right: 1px solid #e6e4e4;
+}
+
+header nav li a{
+	color: #000000;
+}
+
+header nav li a:hover{
+	border-bottom: 2px solid #dd0000;
+}
+
+/*------------------Content-----------------------*/
+
+.advertisement{
+	width: 100%;
+	background-image: url(./includes/images/advertisement.jpg);
+	background-size: 100% 100%;
+	height: 12em;
+	margin-top: 1em;
+}
+
+.row{
+	width: 100%;
+	height: 12em;
+	margin-top: 1em;
+}
+
+.row2Box{
+	height: 100%;
+	width: 49.25%;
+}
+
+.row2Box h6{
+	margin-left: 1em;
+	margin-top: 1em;
+}
+
+.row2BoxText{
+	background: url(./includes/images/layout/box-bg.png) repeat-x;
+	opacity: 0.8;
+	margin-top: 8.6em;
+	height: 4em;
+	width: 100%;
+	font-size: 80%;
+}
+
+.row2BoxText p{
+	margin-left:auto;
+	margin-right: auto;
+	padding: 0.5em;
+	width: 100%;
+	height: 100%;
+}
+
+.view{
+	float: right;
+	margin-top: 3em;
+	margin-right: 1em;
+}
+
+.row3Box{
+	height: 100%;
+	width: 24%;
+	background-color: #f7f6f6;
+	margin-top: -0.5em;
+	float: left;
+}
+
+.row3Box .readMore{
+	width: 2.5em;
+	height: 2.5em;
+	float: right;
+	background: url(./includes/images/layout/linkTriangle.png) no-repeat;
+	background-size: 100% 100%;
+}
+
+.row3Box h6{
+	color: #758d57;
+	margin-left: 1em;
+	margin-top: 2em;
+	margin-bottom: 1em;
+}
+
+.row3Box p{
+	color: #747575;
+	max-height: 4em;
+	width: 9em;
+	font-size: 80%;
+	margin-left: 1em;
+}
+
+.row3Box img{
+	margin-top:1em;
+	width: 100%;
+	height: 5em;
+}
+
+.partners{
+	margin-right: 0.5em;
+	float: left;
+	background-image: url(./includes/images/partners.jpg);
+	background-size: 100% 100%;
+}
+
+.events{
+	float: right;
+	background-image: url(./includes/images/events.jpg);
+	background-size: 100% 100%;
+}
+
+.services{
+	margin-right: 1.3%;
+}
+
+.news{
+	margin-right: 1.3%;
+}
+
+.jobOffers{
+ 	margin-right: 1.3%;
+}
+
+.gallery{
+}
+
+/*---------------------Footer---------------------*/
+.footer{
+	background-color: #758d57;
+	height: 4em;
+	margin-top: 4em;
+	padding-top: 1em;
+	font-size: 65%;
+}
+
+.note{
+	float: left;
+}
+
+.footer ul{
+	float:right;
+}
+
+.footer ul li{
+	float: left;
+	padding-left: 0.5em ;
+}

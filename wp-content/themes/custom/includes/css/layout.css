@@ -1,0 +1,303 @@
+
+body {
+	font-size: medium;
+}
+h1 {
+	font-size: 150%;
+}
+h2 {
+	font-size: 130%;
+}
+h3 {
+	font-size: 120%;
+}
+ul li {
+	font-size: 90%;
+}
+.note {
+	font-size: 85%;
+}
+a{
+	text-decoration: none;
+	color: #000000;
+}
+.wrapper {
+	width:80em;
+	height: 100%;
+	padding: 20px;
+	margin: auto;
+}
+
+.inner{
+	width:70%;
+	margin-left: 15%;
+}
+
+
+header{
+}
+	header section.social{		
+		background-color: #535353;
+		height: 6em;
+	}
+
+		.social article.logo img{
+			width: 220px;
+			height: auto;
+			margin-left: 17.75em;
+			margin-top:2%;
+			float: left;
+			position: absolute;
+		}
+		.social article.icons{
+			margin-top: 3%;			
+			float: right;
+		}
+			.icons a{
+				float: left;
+				display: block;
+				/*padding: 0.5em 0.5em;*/
+				overflow: hidden;
+				position: relative;
+				height: 20px;
+				width: 20px;
+				margin-left: 5px;
+			}
+				.icons a img{
+					position: absolute;
+					height: 20px;
+					width: auto;
+				}
+					img#phone{
+						left:4px;
+					}
+					img#mail{
+						left:-90px;
+					}
+					img#man{
+						left:-140px;
+					}
+					img#like{
+						left:-185px;
+					}
+					img#rss{
+						left:-41px;
+					}
+	a.menuFont{
+		font-family: Reklame Script Regular DEMO, Bradley Hand ITC, Comic Sans MS, Arial;
+		letter-spacing: 1px;
+		color: #ffffff;
+		font-weight: bold;
+	}
+	a.menuFont:hover{
+		color: #000000;
+	}
+
+	header nav{
+		width: 100%;
+		font-family: Reklame Script Regular DEMO, Bradley Hand ITC, Comic Sans MS, Arial;
+		letter-spacing: 1px;
+		font-weight: bold;
+	}
+	header nav div.menu{
+		background-image: url(../images/header-menu-bg.png);
+		background-repeat: repeat-x;
+		background-position: left top;
+		height: 6em;
+		background-size:100% 100%;		
+	}
+		header nav ul{
+			margin-top: 1%;
+			float: left;
+			width: 100%;
+			list-style: none;
+
+		}
+			header nav li a {
+				float: left;
+				display: block;
+				padding: 0.5em 1em;
+				color: #fff;
+				text-decoration: none;
+				font-size: 1.5em;
+			}
+			header nav li a:hover{
+				color: black;
+			}
+			#home #homeLi a{
+				
+			}
+			 #projects #projectLi a, #references #referenceLi a, #blog #blogLi a, #contact #contactLi a, #about #aboutLi a{
+				color: #673C17;
+			}
+		div.center{
+			width: 16%
+		}
+			div.center img{
+				width: 150%;
+				height: auto;
+				margin-left: -3em;
+				margin-top: -3em;
+			}
+		div.left, div.right{
+			width: 42%;
+		}
+		div.left, div.center{
+			float: left;			
+		}
+		div.right{
+			float: right;
+		}
+			header nav ul li.left {
+
+				float: left;
+			}
+
+			header nav ul li.right{
+				float: right;
+
+			}
+
+.leftSection, .rightSection{
+	width: 15%;
+	height: 100%;
+	float: left;
+
+}
+	.leftSection img{
+		width: 100%
+	}
+	.leftSection p{
+		font-family: Calibri, Arial;
+		color:#535353;
+		text-align: center;
+		font-weight: bold;
+		font-size: 170%;
+	}
+		.leftSection p span{
+			font-family: Bebas Neue, Tahoma, Arial;
+		}
+	.rightSection dl#buyMenu{
+		width: 100%;
+		margin-left: auto;
+		margin-right: auto;
+		margin-top:1em;
+	}
+		dl#buyMenu dt{
+			font-family: Bebas Neue, Tahoma, Arial;
+			font-size:160%;
+			color: #535353;
+			text-align: center;
+		}
+			dl#buyMenu dt a{
+				color: #535353;
+			}
+			dl#buyMenu dt a span{
+				font-weight: bolder;
+			}
+			dl#buyMenu dd img{
+				width: 70px;
+				height: auto;
+				margin-left: 36%;
+				margin-top:1em;
+			}
+
+
+.middleSection{
+	width: 70%;
+	height: 100%;
+	float: left;
+}
+	.content{
+		width: 100%;
+	}
+	#slideshow{
+		width: 100%;
+		height: 30em;
+	}
+	.boxContainer{
+		background-color: #c89d64;
+		width: 100%;
+		height: 100%;
+	}
+		.boxContainer dl{
+			margin: 2em;
+			margin-top:0;
+			float: left;
+		}
+			.boxContainer dl div.smallBox{
+				float: left;
+				font-family: Calibri, Arial;		
+				margin-left:2%;
+				margin-top:1%;
+				width: 30%;
+				/*height: 100%;*/
+				/*border:1px solid black;	*/
+			}
+			.boxContainer dl dt{
+				color: #ffffff;
+				font-size:200%;
+				border-bottom: 1px #997f61 solid;
+				margin-bottom: 0.5em;
+			}
+			.boxContainer dl dd{
+				color: #7C4D25;
+				
+			}
+				.boxContainer dl dd img{
+					width: 100%;
+					height: 12em;
+				}
+				.boxContainer dl dd a.readMore{
+					margin-top:0.5em;
+					background-color: #7c4d25;
+					width: 5.1em;
+					display:block;
+					border:1px solid #ffffff;
+					border-radius:5px;
+					padding: 2px;
+					color: #ffffff; 
+					-o-text-overflow: ellipsis;   /* Opera */
+    				text-overflow:    ellipsis;   /* IE, Safari (WebKit) */
+    				overflow:hidden;              /* don't show excess chars */
+    				white-space:nowrap;           /* force single line */
+   				}
+
+.clear{
+	clear: both;
+}
+.dot{
+	/*margin-top:8em;*/
+	background-image: url(../images/dot.png);
+	background-repeat: repeat-x;
+	background-position: left bottom;
+	width: 100%;
+	height: 3em;
+}
+footer{
+	clear: both;
+	font-size: 85%;	
+	background-image: url(../images/footer-dot.png);
+	background-repeat: repeat-x;
+	background-position: left top;
+	background-color: #535353;
+	padding-top:2em;
+	padding-bottom: 2em;
+
+	color: #ffffff;
+}
+	.footerMenu{
+		float: left;
+		color:#ffffff;
+		margin-bottom: 2em;
+	}
+	.footerMenu li{
+		float: left;
+		padding: 0.2em
+	}
+		.footerMenu li a{
+			color: #ffffff;
+		}
+	.copyRight{
+		float: right;
+	}
