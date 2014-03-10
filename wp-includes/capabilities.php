@@ -95,7 +95,7 @@ class WP_Roles {
 	 */
 	function _init () {
 		global $wpdb, $wp_user_roles;
-		$this->role_key = $wpdb->get_blog_prefix() . 'user_roles';
+		$this->role_key = $wpdb->prefix . 'user_roles';
 		if ( ! empty( $wp_user_roles ) ) {
 			$this->roles = $wp_user_roles;
 			$this->use_db = false;
@@ -108,37 +108,7 @@ class WP_Roles {
 
 		$this->role_objects = array();
 		$this->role_names =  array();
-		foreach ( array_keys( $this->roles ) as $role ) {
-			$this->role_objects[$role] = new WP_Role( $role, $this->roles[$role]['capabilities'] );
-			$this->role_names[$role] = $this->roles[$role]['name'];
-		}
-	}
-
-	/**
-	 * Reinitialize the object
-	 *
-	 * Recreates the role objects. This is typically called only by switch_to_blog()
-	 * after switching wpdb to a new blog ID.
-	 *
-	 * @since 3.5.0
-	 * @access public
-	 */
-	function reinit() {
-		// There is no need to reinit if using the wp_user_roles global.
-		if ( ! $this->use_db )
-			return;
-
-		global $wpdb, $wp_user_roles;
-
-		// Duplicated from _init() to avoid an extra function call.
-		$this->role_key = $wpdb->get_blog_prefix() . 'user_roles';
-		$this->roles = get_option( $this->role_key );
-		if ( empty( $this->roles ) )
-			return;
-
-		$this->role_objects = array();
-		$this->role_names =  array();
-		foreach ( array_keys( $this->roles ) as $role ) {
+		foreach ( (array) $this->roles as $role => $data ) {
 			$this->role_objects[$role] = new WP_Role( $role, $this->roles[$role]['capabilities'] );
 			$this->role_names[$role] = $this->roles[$role]['name'];
 		}
@@ -158,7 +128,7 @@ class WP_Roles {
 	 * @param string $role Role name.
 	 * @param string $display_name Role display name.
 	 * @param array $capabilities List of role capabilities in the above format.
-	 * @return WP_Role|null WP_Role object if role is added, null if already exists.
+	 * @return null|WP_Role WP_Role object if role is added, null if already exists.
 	 */
 	function add_role( $role, $display_name, $capabilities = array() ) {
 		if ( isset( $this->roles[$role] ) )
@@ -193,9 +163,6 @@ class WP_Roles {
 
 		if ( $this->use_db )
 			update_option( $this->role_key, $this->roles );
-
-		if ( get_option( 'default_role' ) == $role )
-			update_option( 'default_role', 'subscriber' );
 	}
 
 	/**
@@ -209,9 +176,6 @@ class WP_Roles {
 	 * @param bool $grant Optional, default is true. Whether role is capable of performing capability.
 	 */
 	function add_cap( $role, $cap, $grant = true ) {
-		if ( ! isset( $this->roles[$role] ) )
-			return;
-
 		$this->roles[$role]['capabilities'][$cap] = $grant;
 		if ( $this->use_db )
 			update_option( $this->role_key, $this->roles );
@@ -227,9 +191,6 @@ class WP_Roles {
 	 * @param string $cap Capability name.
 	 */
 	function remove_cap( $role, $cap ) {
-		if ( ! isset( $this->roles[$role] ) )
-			return;
-
 		unset( $this->roles[$role]['capabilities'][$cap] );
 		if ( $this->use_db )
 			update_option( $this->role_key, $this->roles );
@@ -242,7 +203,7 @@ class WP_Roles {
 	 * @access public
 	 *
 	 * @param string $role Role name.
-	 * @return WP_Role|null WP_Role object if found, null if the role does not exist.
+	 * @return object|null Null, if role does not exist. WP_Role object, if found.
 	 */
 	function get_role( $role ) {
 		if ( isset( $this->role_objects[$role] ) )
@@ -272,7 +233,8 @@ class WP_Roles {
 	 * @param string $role Role name to look up.
 	 * @return bool
 	 */
-	function is_role( $role ) {
+	function is_role( $role )
+	{
 		return isset( $this->role_names[$role] );
 	}
 }
@@ -378,15 +340,6 @@ class WP_Role {
 	 * @return bool True, if user has capability. False, if doesn't have capability.
 	 */
 	function has_cap( $cap ) {
-		/**
-		 * Filter which capabilities a role has.
-		 *
-		 * @since 2.0.0
-		 *
-		 * @param array  $capabilities Array of role capabilities.
-		 * @param string $cap          Capability name.
-		 * @param string $name         Role name.
-		 */
 		$capabilities = apply_filters( 'role_has_cap', $this->capabilities, $cap, $this->name );
 		if ( !empty( $capabilities[$cap] ) )
 			return $capabilities[$cap];
@@ -477,7 +430,7 @@ class WP_User {
 	 * @since 2.0.0
 	 * @access public
 	 *
-	 * @param int|string|stdClass|WP_User $id User's ID, a WP_User object, or a user object from the DB.
+	 * @param int|string $id User's ID
 	 * @param string $name Optional. User's username
 	 * @param int $blog_id Optional Blog ID, defaults to current blog.
 	 * @return WP_User
@@ -493,14 +446,6 @@ class WP_User {
 				$prefix . 'usersettings' => $prefix . 'user-settings',
 				$prefix . 'usersettingstime' => $prefix . 'user-settings-time',
 			);
-		}
-
-		if ( is_a( $id, 'WP_User' ) ) {
-			$this->init( $id->data, $blog_id );
-			return;
-		} elseif ( is_object( $id ) ) {
-			$this->init( $id, $blog_id );
-			return;
 		}
 
 		if ( ! empty( $id ) && ! is_numeric( $id ) ) {
@@ -547,9 +492,7 @@ class WP_User {
 			// to int 1.
 			if ( ! is_numeric( $value ) )
 				return false;
-			$value = intval( $value );
-			if ( $value < 1 )
-				return false;
+			$value = absint( $value );
 		} else {
 			$value = trim( $value );
 		}
@@ -656,18 +599,6 @@ class WP_User {
 	}
 
 	/**
-	 * Determine whether the user exists in the database.
-	 *
-	 * @since 3.4.0
-	 * @access public
-	 *
-	 * @return bool True if user exists in the database, false if not.
-	 */
-	function exists() {
-		return ! empty( $this->ID );
-	}
-
-	/**
 	 * Retrieve the value of a property or meta key.
 	 *
 	 * Retrieves from the users and usermeta table.
@@ -694,17 +625,6 @@ class WP_User {
 	}
 
 	/**
-	 * Return an array representation.
-	 *
-	 * @since 3.5.0
-	 *
-	 * @return array Array representation.
-	 */
-	function to_array() {
-		return get_object_vars( $this->data );
-	}
-
-	/**
 	 * Set up capability object properties.
 	 *
 	 * Will set the value for the 'cap_key' property to current database table
@@ -721,7 +641,7 @@ class WP_User {
 		global $wpdb;
 
 		if ( empty($cap_key) )
-			$this->cap_key = $wpdb->get_blog_prefix() . 'capabilities';
+			$this->cap_key = $wpdb->prefix . 'capabilities';
 		else
 			$this->cap_key = $cap_key;
 
@@ -744,8 +664,6 @@ class WP_User {
 	 * @since 2.0.0
 	 * @uses $wp_roles
 	 * @access public
-	 *
-	 * @return array List of all capabilities for the user.
 	 */
 	function get_role_caps() {
 		global $wp_roles;
@@ -755,7 +673,7 @@ class WP_User {
 
 		//Filter out caps that are not role names and assign to $this->roles
 		if ( is_array( $this->caps ) )
-			$this->roles = array_filter( array_keys( $this->caps ), array( $wp_roles, 'is_role' ) );
+			$this->roles = array_filter( array_keys( $this->caps ), array( &$wp_roles, 'is_role' ) );
 
 		//Build $allcaps from role caps, overlay user's $caps
 		$this->allcaps = array();
@@ -764,8 +682,6 @@ class WP_User {
 			$this->allcaps = array_merge( (array) $this->allcaps, (array) $the_role->capabilities );
 		}
 		$this->allcaps = array_merge( (array) $this->allcaps, (array) $this->caps );
-
-		return $this->allcaps;
 	}
 
 	/**
@@ -815,13 +731,12 @@ class WP_User {
 	 * @param string $role Role name.
 	 */
 	function set_role( $role ) {
-		if ( 1 == count( $this->roles ) && $role == current( $this->roles ) )
-			return;
-
 		foreach ( (array) $this->roles as $oldrole )
 			unset( $this->caps[$oldrole] );
 
-		$old_roles = $this->roles;
+		if ( 1 == count( $this->roles ) && $role == $this->roles[0] )
+			return;
+
 		if ( !empty( $role ) ) {
 			$this->caps[$role] = true;
 			$this->roles = array( $role => true );
@@ -831,18 +746,7 @@ class WP_User {
 		update_user_meta( $this->ID, $this->cap_key, $this->caps );
 		$this->get_role_caps();
 		$this->update_user_level_from_caps();
-
-		/**
-		 * Fires after the user's role has changed.
-		 *
-		 * @since 2.9.0
-		 * @since 3.6.0 Added $old_roles to include an array of the user's previous roles.
-		 *
-		 * @param int    $user_id   The user ID.
-		 * @param string $role      The new role.
-		 * @param array  $old_roles An array of the user's previous roles.
-		 */
-		do_action( 'set_user_role', $this->ID, $role, $old_roles );
+		do_action( 'set_user_role', $this->ID, $role );
 	}
 
 	/**
@@ -886,7 +790,7 @@ class WP_User {
 	function update_user_level_from_caps() {
 		global $wpdb;
 		$this->user_level = array_reduce( array_keys( $this->allcaps ), array( $this, 'level_reduction' ), 0 );
-		update_user_meta( $this->ID, $wpdb->get_blog_prefix() . 'user_level', $this->user_level );
+		update_user_meta( $this->ID, $wpdb->prefix . 'user_level', $this->user_level );
 	}
 
 	/**
@@ -912,7 +816,7 @@ class WP_User {
 	 * @param string $cap Capability name.
 	 */
 	function remove_cap( $cap ) {
-		if ( ! isset( $this->caps[$cap] ) )
+		if ( empty( $this->caps[$cap] ) )
 			return;
 		unset( $this->caps[$cap] );
 		update_user_meta( $this->ID, $this->cap_key, $this->caps );
@@ -928,7 +832,7 @@ class WP_User {
 		global $wpdb;
 		$this->caps = array();
 		delete_user_meta( $this->ID, $this->cap_key );
-		delete_user_meta( $this->ID, $wpdb->get_blog_prefix() . 'user_level' );
+		delete_user_meta( $this->ID, $wpdb->prefix . 'user_level' );
 		$this->get_role_caps();
 	}
 
@@ -937,12 +841,13 @@ class WP_User {
 	 *
 	 * This is useful for looking up whether the user has a specific role
 	 * assigned to the user. The second optional parameter can also be used to
-	 * check for capabilities against a specific object, such as a post or user.
+	 * check for capabilities against a specific post.
 	 *
 	 * @since 2.0.0
 	 * @access public
 	 *
 	 * @param string|int $cap Capability or role name to search.
+	 * @param int $post_id Optional. Post ID to check capability against specific post.
 	 * @return bool True, if user has capability; false, if user does not have capability.
 	 */
 	function has_cap( $cap ) {
@@ -962,19 +867,8 @@ class WP_User {
 			return true;
 		}
 
-		/**
-		 * Dynamically filter a user's capabilities.
-		 *
-		 * @since 2.0.0
-		 * @since 3.7.0 Added the user object.
-		 *
-		 * @param array   $allcaps An array of all the role's capabilities.
-		 * @param array   $caps    Actual capabilities for meta capability.
-		 * @param array   $args    Optional parameters passed to has_cap(), typically object ID.
-		 * @param WP_User $user    The user object.
-		 */
 		// Must have ALL requested caps
-		$capabilities = apply_filters( 'user_has_cap', $this->allcaps, $caps, $args, $this );
+		$capabilities = apply_filters( 'user_has_cap', $this->allcaps, $caps, $args );
 		$capabilities['exist'] = true; // Everyone is allowed to exist
 		foreach ( (array) $caps as $cap ) {
 			if ( empty( $capabilities[ $cap ] ) )
@@ -1042,19 +936,20 @@ function map_meta_cap( $cap, $user_id ) {
 		$caps[] = 'promote_users';
 		break;
 	case 'edit_user':
-	case 'edit_users':
 		// Allow user to edit itself
-		if ( 'edit_user' == $cap && isset( $args[0] ) && $user_id == $args[0] )
+		if ( isset( $args[0] ) && $user_id == $args[0] )
 			break;
-
+		// Fall through
+	case 'edit_users':
 		// If multisite these caps are allowed only for super admins.
 		if ( is_multisite() && !is_super_admin( $user_id ) )
 			$caps[] = 'do_not_allow';
 		else
-			$caps[] = 'edit_users'; // edit_user maps to edit_users.
+			$caps[] = 'edit_users'; // Explicit due to primitive fall through
 		break;
 	case 'delete_post':
 	case 'delete_page':
+		$author_data = get_userdata( $user_id );
 		$post = get_post( $args[0] );
 
 		if ( 'revision' == $post->post_type ) {
@@ -1071,14 +966,15 @@ function map_meta_cap( $cap, $user_id ) {
 			break;
 		}
 
-		$post_author_id = $post->post_author;
-
-		// If no author set yet, default to current user for cap checks.
-		if ( ! $post_author_id )
-			$post_author_id = $user_id;
+		if ( '' != $post->post_author ) {
+			$post_author_data = get_userdata( $post->post_author );
+		} else {
+			// No author set yet, so default to current user for cap checks.
+			$post_author_data = $author_data;
+		}
 
 		// If the user is the author...
-		if ( $user_id == $post_author_id ) {
+		if ( is_object( $post_author_data ) && $user_id == $post_author_data->ID ) {
 			// If the post is published...
 			if ( 'publish' == $post->post_status ) {
 				$caps[] = $post_type->cap->delete_published_posts;
@@ -1103,9 +999,8 @@ function map_meta_cap( $cap, $user_id ) {
 		// edit_others_posts
 	case 'edit_post':
 	case 'edit_page':
+		$author_data = get_userdata( $user_id );
 		$post = get_post( $args[0] );
-		if ( empty( $post ) )
-			break;
 
 		if ( 'revision' == $post->post_type ) {
 			$post = get_post( $post->post_parent );
@@ -1121,14 +1016,16 @@ function map_meta_cap( $cap, $user_id ) {
 			break;
 		}
 
-		$post_author_id = $post->post_author;
+		if ( '' != $post->post_author ) {
+			$post_author_data = get_userdata( $post->post_author );
+		} else {
+			// No author set yet, so default to current user for cap checks.
+			$post_author_data = $author_data;
+		}
 
-		// If no author set yet, default to current user for cap checks.
-		if ( ! $post_author_id )
-			$post_author_id = $user_id;
-
+		//echo "current user id : $user_id, post author id: " . $post_author_data->ID . "<br />";
 		// If the user is the author...
-		if ( $user_id == $post_author_id ) {
+		if ( is_object( $post_author_data ) && $user_id == $post_author_data->ID ) {
 			// If the post is published...
 			if ( 'publish' == $post->post_status ) {
 				$caps[] = $post_type->cap->edit_published_posts;
@@ -1151,6 +1048,7 @@ function map_meta_cap( $cap, $user_id ) {
 		break;
 	case 'read_post':
 	case 'read_page':
+		$author_data = get_userdata( $user_id );
 		$post = get_post( $args[0] );
 
 		if ( 'revision' == $post->post_type ) {
@@ -1167,55 +1065,33 @@ function map_meta_cap( $cap, $user_id ) {
 			break;
 		}
 
-		$status_obj = get_post_status_object( $post->post_status );
-		if ( $status_obj->public ) {
+		if ( 'private' != $post->post_status ) {
 			$caps[] = $post_type->cap->read;
 			break;
 		}
 
-		$post_author_id = $post->post_author;
+		if ( '' != $post->post_author ) {
+			$post_author_data = get_userdata( $post->post_author );
+		} else {
+			// No author set yet, so default to current user for cap checks.
+			$post_author_data = $author_data;
+		}
 
-		// If no author set yet, default to current user for cap checks.
-		if ( ! $post_author_id )
-			$post_author_id = $user_id;
-
-		if ( $user_id == $post_author_id )
+		if ( is_object( $post_author_data ) && $user_id == $post_author_data->ID )
 			$caps[] = $post_type->cap->read;
-		elseif ( $status_obj->private )
-			$caps[] = $post_type->cap->read_private_posts;
 		else
-			$caps = map_meta_cap( 'edit_post', $user_id, $post->ID );
-		break;
-	case 'publish_post':
-		$post = get_post( $args[0] );
-		$post_type = get_post_type_object( $post->post_type );
-
-		$caps[] = $post_type->cap->publish_posts;
+			$caps[] = $post_type->cap->read_private_posts;
 		break;
 	case 'edit_post_meta':
 	case 'delete_post_meta':
 	case 'add_post_meta':
 		$post = get_post( $args[0] );
-		$caps = map_meta_cap( 'edit_post', $user_id, $post->ID );
+		$post_type_object = get_post_type_object( $post->post_type );
+		$caps = map_meta_cap( $post_type_object->cap->edit_post, $user_id, $post->ID );
 
 		$meta_key = isset( $args[ 1 ] ) ? $args[ 1 ] : false;
 
 		if ( $meta_key && has_filter( "auth_post_meta_{$meta_key}" ) ) {
-			/**
-			 * Filter whether the user is allowed to add post meta to a post.
-			 *
-			 * The dynamic portion of the hook name, $meta_key, refers to the
-			 * meta key passed to map_meta_cap().
-			 *
-			 * @since 3.3.0
-			 *
-			 * @param bool   $allowed  Whether the user can add the post meta. Default false.
-			 * @param string $meta_key The meta key.
-			 * @param int    $post_id  Post ID.
-			 * @param int    $user_id  User ID.
-			 * @param string $cap      Capability name.
-			 * @param array  $caps     User capabilities.
-			 */
 			$allowed = apply_filters( "auth_post_meta_{$meta_key}", false, $meta_key, $post->ID, $user_id, $cap, $caps );
 			if ( ! $allowed )
 				$caps[] = $cap;
@@ -1225,10 +1101,10 @@ function map_meta_cap( $cap, $user_id ) {
 		break;
 	case 'edit_comment':
 		$comment = get_comment( $args[0] );
-		if ( empty( $comment ) )
-			break;
 		$post = get_post( $comment->comment_post_ID );
-		$caps = map_meta_cap( 'edit_post', $user_id, $post->ID );
+		$post_type_object = get_post_type_object( $post->post_type );
+
+		$caps = map_meta_cap( $post_type_object->cap->edit_post, $user_id, $post->ID );
 		break;
 	case 'unfiltered_upload':
 		if ( defined('ALLOW_UNFILTERED_UPLOADS') && ALLOW_UNFILTERED_UPLOADS && ( !is_multisite() || is_super_admin( $user_id ) )  )
@@ -1236,28 +1112,14 @@ function map_meta_cap( $cap, $user_id ) {
 		else
 			$caps[] = 'do_not_allow';
 		break;
-	case 'unfiltered_html' :
-		// Disallow unfiltered_html for all users, even admins and super admins.
-		if ( defined( 'DISALLOW_UNFILTERED_HTML' ) && DISALLOW_UNFILTERED_HTML )
-			$caps[] = 'do_not_allow';
-		elseif ( is_multisite() && ! is_super_admin( $user_id ) )
-			$caps[] = 'do_not_allow';
-		else
-			$caps[] = $cap;
-		break;
 	case 'edit_files':
 	case 'edit_plugins':
 	case 'edit_themes':
-		// Disallow the file editors.
-		if ( defined( 'DISALLOW_FILE_EDIT' ) && DISALLOW_FILE_EDIT )
+		if ( defined('DISALLOW_FILE_EDIT') && DISALLOW_FILE_EDIT ) {
 			$caps[] = 'do_not_allow';
-		elseif ( defined( 'DISALLOW_FILE_MODS' ) && DISALLOW_FILE_MODS )
-			$caps[] = 'do_not_allow';
-		elseif ( is_multisite() && ! is_super_admin( $user_id ) )
-			$caps[] = 'do_not_allow';
-		else
-			$caps[] = $cap;
-		break;
+			break;
+		}
+		// Fall through if not DISALLOW_FILE_EDIT.
 	case 'update_plugins':
 	case 'delete_plugins':
 	case 'install_plugins':
@@ -1265,42 +1127,35 @@ function map_meta_cap( $cap, $user_id ) {
 	case 'delete_themes':
 	case 'install_themes':
 	case 'update_core':
-		// Disallow anything that creates, deletes, or updates core, plugin, or theme files.
+		// Disallow anything that creates, deletes, or edits core, plugin, or theme files.
 		// Files in uploads are excepted.
-		if ( defined( 'DISALLOW_FILE_MODS' ) && DISALLOW_FILE_MODS )
+		if ( defined('DISALLOW_FILE_MODS') && DISALLOW_FILE_MODS ) {
 			$caps[] = 'do_not_allow';
-		elseif ( is_multisite() && ! is_super_admin( $user_id ) )
-			$caps[] = 'do_not_allow';
-		else
-			$caps[] = $cap;
-		break;
-	case 'activate_plugins':
-		$caps[] = $cap;
-		if ( is_multisite() ) {
-			// update_, install_, and delete_ are handled above with is_super_admin().
-			$menu_perms = get_site_option( 'menu_items', array() );
-			if ( empty( $menu_perms['plugins'] ) )
-				$caps[] = 'manage_network_plugins';
+			break;
 		}
-		break;
+		// Fall through if not DISALLOW_FILE_MODS.
+	case 'unfiltered_html':
+		// Disallow unfiltered_html for all users, even admins and super admins.
+		if ( defined('DISALLOW_UNFILTERED_HTML') && DISALLOW_UNFILTERED_HTML ) {
+			$caps[] = 'do_not_allow';
+			break;
+		}
+		// Fall through if not DISALLOW_UNFILTERED_HTML
 	case 'delete_user':
 	case 'delete_users':
-		// If multisite only super admins can delete users.
-		if ( is_multisite() && ! is_super_admin( $user_id ) )
+		// If multisite these caps are allowed only for super admins.
+		if ( is_multisite() && !is_super_admin( $user_id ) ) {
 			$caps[] = 'do_not_allow';
-		else
-			$caps[] = 'delete_users'; // delete_user maps to delete_users.
+		} else {
+			if ( 'delete_user' == $cap )
+				$cap = 'delete_users';
+			$caps[] = $cap;
+		}
 		break;
 	case 'create_users':
 		if ( !is_multisite() )
 			$caps[] = $cap;
 		elseif ( is_super_admin() || get_site_option( 'add_new_users' ) )
-			$caps[] = $cap;
-		else
-			$caps[] = 'do_not_allow';
-		break;
-	case 'manage_links' :
-		if ( get_option( 'link_manager_enabled' ) )
 			$caps[] = $cap;
 		else
 			$caps[] = 'do_not_allow';
@@ -1317,17 +1172,7 @@ function map_meta_cap( $cap, $user_id ) {
 		$caps[] = $cap;
 	}
 
-	/**
-	 * Filter a user's capabilities depending on specific context and/or privilege.
-	 *
-	 * @since 2.8.0
-	 *
-	 * @param array  $caps    Returns the user's actual capabilities.
-	 * @param string $cap     Capability name.
-	 * @param int    $user_id The user ID.
-	 * @param array  $args    Adds the context to the cap. Typically the object ID.
-	 */
-	return apply_filters( 'map_meta_cap', $caps, $cap, $user_id, $args );
+	return apply_filters('map_meta_cap', $caps, $cap, $user_id, $args);
 }
 
 /**
@@ -1360,23 +1205,21 @@ function current_user_can( $capability ) {
  * @return bool
  */
 function current_user_can_for_blog( $blog_id, $capability ) {
-	if ( is_multisite() )
-		switch_to_blog( $blog_id );
-
 	$current_user = wp_get_current_user();
 
 	if ( empty( $current_user ) )
 		return false;
 
+	// Create new object to avoid stomping the global current_user.
+	$user = new WP_User( $current_user->ID) ;
+
+	// Set the blog id.  @todo add blog id arg to WP_User constructor?
+	$user->for_blog( $blog_id );
+
 	$args = array_slice( func_get_args(), 2 );
 	$args = array_merge( array( $capability ), $args );
 
-	$can = call_user_func_array( array( $current_user, 'has_cap' ), $args );
-
-	if ( is_multisite() )
-		restore_current_blog();
-
-	return $can;
+	return call_user_func_array( array( &$user, 'has_cap' ), $args );
 }
 
 /**
@@ -1392,15 +1235,15 @@ function author_can( $post, $capability ) {
 	if ( !$post = get_post($post) )
 		return false;
 
-	$author = get_userdata( $post->post_author );
+	$author = new WP_User( $post->post_author );
 
-	if ( ! $author )
+	if ( empty( $author->ID ) )
 		return false;
 
 	$args = array_slice( func_get_args(), 2 );
 	$args = array_merge( array( $capability ), $args );
 
-	return call_user_func_array( array( $author, 'has_cap' ), $args );
+	return call_user_func_array( array( &$author, 'has_cap' ), $args );
 }
 
 /**
@@ -1414,15 +1257,15 @@ function author_can( $post, $capability ) {
  */
 function user_can( $user, $capability ) {
 	if ( ! is_object( $user ) )
-		$user = get_userdata( $user );
+		$user = new WP_User( $user );
 
-	if ( ! $user || ! $user->exists() )
+	if ( ! $user || ! $user->ID )
 		return false;
 
 	$args = array_slice( func_get_args(), 2 );
 	$args = array_merge( array( $capability ), $args );
 
-	return call_user_func_array( array( $user, 'has_cap' ), $args );
+	return call_user_func_array( array( &$user, 'has_cap' ), $args );
 }
 
 /**
@@ -1432,7 +1275,7 @@ function user_can( $user, $capability ) {
  * @since 2.0.0
  *
  * @param string $role Role name.
- * @return WP_Role|null WP_Role object if found, null if the role does not exist.
+ * @return object
  */
 function get_role( $role ) {
 	global $wp_roles;
@@ -1452,7 +1295,7 @@ function get_role( $role ) {
  * @param string $role Role name.
  * @param string $display_name Display name for role.
  * @param array $capabilities List of capabilities, e.g. array( 'edit_posts' => true, 'delete_posts' => false );
- * @return WP_Role|null WP_Role object if role is added, null if already exists.
+ * @return null|WP_Role WP_Role object if role is added, null if already exists.
  */
 function add_role( $role, $display_name, $capabilities = array() ) {
 	global $wp_roles;
@@ -1470,6 +1313,7 @@ function add_role( $role, $display_name, $capabilities = array() ) {
  * @since 2.0.0
  *
  * @param string $role Role name.
+ * @return null
  */
 function remove_role( $role ) {
 	global $wp_roles;
@@ -1477,7 +1321,7 @@ function remove_role( $role ) {
 	if ( ! isset( $wp_roles ) )
 		$wp_roles = new WP_Roles();
 
-	$wp_roles->remove_role( $role );
+	return $wp_roles->remove_role( $role );
 }
 
 /**
@@ -1507,12 +1351,12 @@ function get_super_admins() {
  * @return bool True if the user is a site admin.
  */
 function is_super_admin( $user_id = false ) {
-	if ( ! $user_id || $user_id == get_current_user_id() )
-		$user = wp_get_current_user();
+	if ( $user_id )
+		$user = new WP_User( $user_id );
 	else
-		$user = get_userdata( $user_id );
+		$user = wp_get_current_user();
 
-	if ( ! $user || ! $user->exists() )
+	if ( empty( $user->ID ) )
 		return false;
 
 	if ( is_multisite() ) {
@@ -1526,3 +1370,5 @@ function is_super_admin( $user_id = false ) {
 
 	return false;
 }
+
+?>

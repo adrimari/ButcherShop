@@ -91,12 +91,36 @@
 
 
 <body <?php body_class(); ?>>
-<div id="wrapper" class="hfeed">
-   	<div id="discs"></div>
-	<div id="logo_print">
-    	<img src="<?php echo home_url( '/' ); ?>wp-content/themes/twentyten/images/logo.png" />
-    </div>
-	<div id="header">
+<div  class="hfeed">
+
+	<header id="header" class="wrapper">
+		<section class="social">
+			<div class="inner">
+				<article class="logo">
+					<a href="<?php echo esc_url( home_url( '/' ) ); ?>"><img src="wp-content/themes/twentyten/images/steakout/steakout-logo.png" alt="steak out logo"/></a>
+				</article>
+				<article class="icons">
+					<a href="#"><img src="wp-content/themes/twentyten/images/steakout/social-links.png" id="phone" alt="Call Us"></a>
+					<a href="#"><img src="wp-content/themes/twentyten/images/steakout/social-links.png" id="mail"  alt="Mail Us"></a>
+					<a href="#"><img src="wp-content/themes/twentyten/images/steakout/social-links.png" id="man"  alt=""></a>
+					<a href="#"><img src="wp-content/themes/twentyten/images/steakout/social-links.png" id="like"  alt="Like us on Facebook"></a>
+					<a href="#"><img src="wp-content/themes/twentyten/images/steakout/social-links.png" id="rss"  alt="Subscribe to RSS feed"></a>
+				</article>
+					<a class="menuFont" href="./mobi/index.html">View on Mobile Device</a>
+			</div>
+		</section>
+		<nav>
+			<?php wp_nav_menu( array( 'theme_location' => 'primary' ) ); ?>	
+		</nav>
+
+
+
+
+
+
+
+
+
 		<div id="masthead">
 			<div id="branding" role="banner">
 				<?php $heading_tag = ( is_home() || is_front_page() ) ? 'h1' : 'div'; ?>
@@ -106,8 +130,6 @@
 					</span>
 				</div>
                 <div class="menu_container">
-                	<div class="dots">
-                	<div class="left">
                     	<a href="<?php echo home_url( '/' ); ?>" title="<?php echo esc_attr( get_bloginfo( 'name', 'display' ) ); ?>">
                    			<div id="home"></div>
                         </a>
@@ -124,13 +146,6 @@
                         	<a href="<?php echo home_url( '/' ); ?>?page_id=11" title="Checkout"></a>
                     	</div>
                         <div id="sidebartop" style="float:right;background: url('<?php echo home_url( '/' ); ?>wp-content/themes/twentyten/images/sidebar_top.png') no-repeat;width: 300px;height: 82px;">
-                        	<div class="sidebar">
-	<div class="top">
-		<div id="delivery">
-			<div id="delivery_amt">Orders over R500 to Gauteng</div>
-		</div>
-	</div>
-                        </div>
                     </div>
                 </div>
 				<div id="site-description"><?php bloginfo( 'description' ); ?></div>
@@ -156,5 +171,5 @@
 
 		</div><!-- #masthead -->
 	</div><!-- #header -->
-</div>	
+</header>	
 <div id="main">
