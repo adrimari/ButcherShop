@@ -24,7 +24,6 @@ a{
 .wrapper {
 	width:80em;
 	height: 100%;
-	padding: 20px;
 	margin: auto;
 }
 
@@ -38,7 +37,7 @@ header{
 }
 	header section.social{		
 		background-color: #535353;
-		height: 6em;
+		height: 5em;
 	}
 
 		.social div article.logo img{
@@ -46,7 +45,7 @@ header{
 			height: auto;
 			margin-left: 22em;
 			margin-right: auto;
-			margin-top:2%;
+			margin-top:0.5em;
 			position: absolute;
 		}
 		.social article.icons{
@@ -140,6 +139,7 @@ header{
 		background-position: left top;
 		height: 3em;
 		background-size:100% 100%;	
+		padding: 1.3em 0em;
 			
 	}
 		header nav ul{
@@ -260,6 +260,8 @@ header{
 }
 	.main-content{
 		width: 100%;
+		padding: 1em 0em;
+		color: #7C4D25;
 	}
 	#slideshow{
 		width: 100%;

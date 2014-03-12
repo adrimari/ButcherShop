@@ -1,4 +1,7 @@
-<?php
+<?
+
+// DEBUGGING
+// define('WP_DEBUG', true);
 /**
  * The base configurations of the WordPress.
  *

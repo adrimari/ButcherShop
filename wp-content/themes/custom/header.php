@@ -3,20 +3,19 @@
 <head>
 
 	<title>Steakout | Shop</title>
-	
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script type="text/javascript" src="<?php echo (get_template_directory_uri()); ?>/includes/javascript/rhino/js/mousewheel.js"></script>
+	<script type="text/javascript" src="<?php echo (get_template_directory_uri()); ?>/includes/javascript/rhino/js/rhinoslider.js"></script>
+	<script type="text/javascript" src="<?php echo (get_template_directory_uri()); ?>/includes/javascript/slider.js"></script>
 	<!-- css resets -->
 	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.14.1/build/cssreset/cssreset-min.css">
 	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.14.1/build/cssfonts/cssfonts-min.css">
 	<!-- custom css -->
 	<link rel="stylesheet" href="<?php echo (get_template_directory_uri()); ?>/includes/css/layout.css"  type="text/css"/>
 	<link rel="stylesheet" href="<?php echo (get_template_directory_uri()); ?>/includes/javascript/rhino/css/rhino.css"  type="text/css"/>
-	<script type="<?php echo (get_template_directory_uri()); ?>/includes/javascript/jQuery.js"></script>
-		<<script type="text/javascript" src="<?php echo (get_template_directory_uri()); ?>/includes/javascript/rhino/js/mousewheel.js"></script>
-		<script type="text/javascript" src="<?php echo (get_template_directory_uri()); ?>/includes/javascript/rhino/js/rhinoslider.js"></script>
-		<script type="text/javascript" src="<?php echo (get_template_directory_uri()); ?>/includes/javascript/slider.js"></script>
-
 </head>
 <body id="home">
+	
 	<div>
 		<div class="wrapper">
 			<div>
