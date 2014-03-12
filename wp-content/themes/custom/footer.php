@@ -5,11 +5,11 @@
 							</article>
 							<div class="clear"></div> 
 							<article class="icons">
-								<a href="#"><img src="./wp-content/themes/custom/includes/images/social-links-all.png" id="phone"></a>
-								<a href="#"><img src="./wp-content/themes/custom/includes/images/social-links-all.png" id="mail"></a>
-								<a href="#"><img src="./wp-content/themes/custom/includes/images/social-links-all.png" id="man"></a>
-								<a href="#"><img src="./wp-content/themes/custom/includes/images/social-links-all.png" id="like"></a>
-								<a href="#"><img src="./wp-content/themes/custom/includes/images/social-links-all.png" id="rss"></a>
+								<a href="#"><img src="<?php echo (get_template_directory_uri()); ?>/includes/images/social-links-all.png" id="phone"></a>
+								<a href="#"><img src="<?php echo (get_template_directory_uri()); ?>/includes/images/social-links-all.png" id="mail"></a>
+								<a href="#"><img src="<?php echo (get_template_directory_uri()); ?>/includes/images/social-links-all.png" id="man"></a>
+								<a href="#"><img src="<?php echo (get_template_directory_uri()); ?>/includes/images/social-links-all.png" id="like"></a>
+								<a href="#"><img src="<?php echo (get_template_directory_uri()); ?>/includes/images/social-links-all.png" id="rss"></a>
 							</article>
 							<article class="copyRight">
 								Copyright &copy 2014
