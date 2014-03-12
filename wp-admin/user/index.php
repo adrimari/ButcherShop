@@ -7,6 +7,6 @@
  * @since 3.1.0
  */
 
-require_once( dirname( __FILE__ ) . '/admin.php' );
+require_once( './admin.php' );
 
-require( ABSPATH . 'wp-admin/index.php' );
+require( '../index.php' );

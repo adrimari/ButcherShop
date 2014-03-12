@@ -41,12 +41,12 @@ header{
 		height: 6em;
 	}
 
-		.social article.logo img{
+		.social div article.logo img{
 			width: 220px;
 			height: auto;
-			margin-left: 17.75em;
+			margin-left: 22em;
+			margin-right: auto;
 			margin-top:2%;
-			float: left;
 			position: absolute;
 		}
 		.social article.icons{
@@ -63,13 +63,22 @@ header{
 				width: 20px;
 				margin-left: 5px;
 			}
+				.icons a:hover{
+					background-image: url();
+
+					
+				}
+
+
+
 				.icons a img{
 					position: absolute;
-					height: 20px;
+					height: 40px;
 					width: auto;
 				}
 					img#phone{
 						left:4px;
+						top: 0px;
 					}
 					img#mail{
 						left:-90px;
@@ -82,6 +91,27 @@ header{
 					}
 					img#rss{
 						left:-41px;
+					}
+
+					img#phone:hover{
+						left:4px;
+						top: -20px;
+					}
+					img#mail:hover{
+						left:-90px;
+						top: -20px;
+					}
+					img#man:hover{
+						left:-140px;
+						top: -20px;
+					}
+					img#like:hover{
+						left:-185px;
+						top: -20px;
+					}
+					img#rss:hover{
+						left:-41px;
+						top: -20px;
 					}
 	a.menuFont{
 		font-family: Reklame Script Regular DEMO, Bradley Hand ITC, Comic Sans MS, Arial;
@@ -98,25 +128,36 @@ header{
 		font-family: Reklame Script Regular DEMO, Bradley Hand ITC, Comic Sans MS, Arial;
 		letter-spacing: 1px;
 		font-weight: bold;
+		-webkit-column-count: 2;
+		-webkit-column-gap:230px;
+		height: 100%;
+		column-rule: none;
 	}
-	header nav div.menu{
+
+	header div.menu-container{
 		background-image: url(../images/header-menu-bg.png);
 		background-repeat: repeat-x;
 		background-position: left top;
-		height: 6em;
-		background-size:100% 100%;		
+		height: 3em;
+		background-size:100% 100%;	
+			
 	}
 		header nav ul{
-			margin-top: 1%;
+			margin-left: auto;
+			margin-right: auto;
 			float: left;
 			width: 100%;
 			list-style: none;
 
 		}
+			header nav li{
+
+			}
+
 			header nav li a {
 				float: left;
 				display: block;
-				padding: 0.5em 1em;
+				padding: 10px 0.6em;
 				color: #fff;
 				text-decoration: none;
 				font-size: 1.5em;
@@ -124,6 +165,15 @@ header{
 			header nav li a:hover{
 				color: black;
 			}
+
+			header nav div ul li ul li{
+
+			}
+
+			header nav div ul li ul li a{
+				
+			}
+
 			#home #homeLi a{
 				
 			}
@@ -293,10 +343,15 @@ footer{
 	}
 	.footerMenu li{
 		float: left;
-		padding: 0.2em
+		padding: 0em 0.4em;
+
 	}
 		.footerMenu li a{
 			color: #ffffff;
+		}
+
+		.footerMenu li a:hover{
+			color: #c89d64
 		}
 	.copyRight{
 		float: right;

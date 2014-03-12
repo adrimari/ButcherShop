@@ -1,9 +1,7 @@
-<?php get_header(); ?>
-<article class="leftSection">
-						<img src="./wp-content/themes/custom/includes/images/free-delivery.png">
-						<p>On all Order</p>
-						<p><span class="bold">Over R500</span></p>
-					</article>
+<?php get_header(); 
+		get_sidebar('left');
+?>
+
 
 				
 					<article class="middleSection">
@@ -64,36 +62,8 @@
 
 					</article>
 
-
-					<article class="rightSection">
-						<dl id="buyMenu">
-							<a href="#"><dd><img src="./wp-content/themes/custom/includes/images/cow.png"></dd>
-							<dt>Buy <span class="bold">Beef</span></dt></a>
-
-							<a href="#"><dd><img src="./wp-content/themes/custom/includes/images/biltong.png"></dd>
-							<dt>Buy <span class="bold">Biltong</span></dt></a>
-
-							<a href="#"><dd><img src="./wp-content/themes/custom/includes/images/chicken.png"></dd>
-							<dt>Buy <span>Chicken</span></dt></a>
-
-							<a href="#"><dd><img src="./wp-content/themes/custom/includes/images/rand.png"></dd>
-							<dt><span>Rand</span></dt></a>
-
-							<a href="#"><dd><img src="./wp-content/themes/custom/includes/images/game.png"></dd>
-							<dt>Buy <span>Game</span></dt></a>
-
-							<a href="#"><dd><img src="./wp-content/themes/custom/includes/images/lamb.png"></dd>
-							<dt>Buy <span>Lamb</span></dt></a>
-
-							<a href="#"><dd><img src="./wp-content/themes/custom/includes/images/pork.png"></dd>
-							<dt>Buy <span>Pork</span></dt></a>
-
-							<a href="#"><dd><img src="./wp-content/themes/custom/includes/images/gram-kilo.png"></dd>
-							<dt><span>Gram Kilogram</span></dt></a>
-						</dl>
-						<div class="clear"></div>
-					</article>
-					<div class="clear dot"></div>
+<?php get_sidebar('right');?>
+					
 				</div>
 				<div>
 <?php get_footer(); ?>

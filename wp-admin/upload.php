@@ -7,7 +7,7 @@
  */
 
 /** WordPress Administration Bootstrap */
-require_once( dirname( __FILE__ ) . '/admin.php' );
+require_once( './admin.php' );
 
 if ( !current_user_can('upload_files') )
 	wp_die( __( 'You do not have permission to upload files.' ) );
@@ -57,7 +57,7 @@ if ( $doaction ) {
 			if ( !$parent_id )
 				return;
 
-			$parent = get_post( $parent_id );
+			$parent = &get_post( $parent_id );
 			if ( !current_user_can( 'edit_post', $parent_id ) )
 				wp_die( __( 'You are not allowed to edit this post.' ) );
 
@@ -69,14 +69,12 @@ if ( $doaction ) {
 					continue;
 
 				$attach[] = $att_id;
+				clean_attachment_cache( $att_id );
 			}
 
 			if ( ! empty( $attach ) ) {
-				$attach_string = implode( ',', $attach );
-				$attached = $wpdb->query( $wpdb->prepare( "UPDATE $wpdb->posts SET post_parent = %d WHERE post_type = 'attachment' AND ID IN ( $attach_string )", $parent_id ) );
-				foreach ( $attach as $att_id ) {
-					clean_attachment_cache( $att_id );
-				}
+				$attach = implode( ',', $attach );
+				$attached = $wpdb->query( $wpdb->prepare( "UPDATE $wpdb->posts SET post_parent = %d WHERE post_type = 'attachment' AND ID IN ( $attach )", $parent_id ) );
 			}
 
 			if ( isset( $attached ) ) {
@@ -99,7 +97,7 @@ if ( $doaction ) {
 					wp_die( __( 'You are not allowed to move this post to the trash.' ) );
 
 				if ( !wp_trash_post( $post_id ) )
-					wp_die( __( 'Error in moving to trash.' ) );
+					wp_die( __( 'Error in moving to trash...' ) );
 			}
 			$location = add_query_arg( array( 'trashed' => count( $post_ids ), 'ids' => join( ',', $post_ids ) ), $location );
 			break;
@@ -111,7 +109,7 @@ if ( $doaction ) {
 					wp_die( __( 'You are not allowed to move this post out of the trash.' ) );
 
 				if ( !wp_untrash_post( $post_id ) )
-					wp_die( __( 'Error in restoring from trash.' ) );
+					wp_die( __( 'Error in restoring from trash...' ) );
 			}
 			$location = add_query_arg( 'untrashed', count( $post_ids ), $location );
 			break;
@@ -123,7 +121,7 @@ if ( $doaction ) {
 					wp_die( __( 'You are not allowed to delete this post.' ) );
 
 				if ( !wp_delete_attachment( $post_id_del ) )
-					wp_die( __( 'Error in deleting.' ) );
+					wp_die( __( 'Error in deleting...' ) );
 			}
 			$location = add_query_arg( 'deleted', count( $post_ids ), $location );
 			break;
@@ -132,7 +130,7 @@ if ( $doaction ) {
 	wp_redirect( $location );
 	exit;
 } elseif ( ! empty( $_GET['_wp_http_referer'] ) ) {
-	 wp_redirect( remove_query_arg( array( '_wp_http_referer', '_wpnonce' ), wp_unslash( $_SERVER['REQUEST_URI'] ) ) );
+	 wp_redirect( remove_query_arg( array( '_wp_http_referer', '_wpnonce' ), stripslashes( $_SERVER['REQUEST_URI'] ) ) );
 	 exit;
 }
 
@@ -173,16 +171,12 @@ get_current_screen()->set_help_sidebar(
 	'<p>' . __( '<a href="http://wordpress.org/support/" target="_blank">Support Forums</a>' ) . '</p>'
 );
 
-require_once( ABSPATH . 'wp-admin/admin-header.php' );
+require_once('./admin-header.php');
 ?>
 
 <div class="wrap">
-<h2>
-<?php
-echo esc_html( $title );
-if ( current_user_can( 'upload_files' ) ) { ?>
-	<a href="media-new.php" class="add-new-h2"><?php echo esc_html_x('Add New', 'file'); ?></a><?php
-}
+<?php screen_icon(); ?>
+<h2><?php echo esc_html( $title ); ?> <a href="media-new.php" class="add-new-h2"><?php echo esc_html_x('Add New', 'file'); ?></a> <?php
 if ( ! empty( $_REQUEST['s'] ) )
 	printf( '<span class="subtitle">' . __('Search results for &#8220;%s&#8221;') . '</span>', get_search_query() ); ?>
 </h2>
@@ -246,4 +240,4 @@ if ( !empty($message) ) { ?>
 </div>
 
 <?php
-include( ABSPATH . 'wp-admin/admin-footer.php' );
+include('./admin-footer.php');

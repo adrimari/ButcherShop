@@ -1,6 +1,13 @@
 <?php
 /**
- * WordPress Filesystem Class for implementing SSH2
+ * WordPress SSH2 Filesystem.
+ *
+ * @package WordPress
+ * @subpackage Filesystem
+ */
+
+/**
+ * WordPress Filesystem Class for implementing SSH2.
  *
  * To use this class you must follow these steps for PHP 5.2.6+
  *
@@ -28,10 +35,10 @@
  *
  * Note: as of WordPress 2.8, This utilises the PHP5+ function 'stream_get_contents'
  *
- * @since 2.7.0
- *
+ * @since 2.7
  * @package WordPress
  * @subpackage Filesystem
+ * @uses WP_Filesystem_Base Extends class
  */
 class WP_Filesystem_SSH2 extends WP_Filesystem_Base {
 
@@ -143,7 +150,7 @@ class WP_Filesystem_SSH2 extends WP_Filesystem_Base {
 		return false;
 	}
 
-	function get_contents( $file ) {
+	function get_contents($file, $type = '', $resumepos = 0 ) {
 		$file = ltrim($file, '/');
 		return file_get_contents('ssh2.sftp://' . $this->sftp_link . '/' . $file);
 	}
@@ -154,14 +161,12 @@ class WP_Filesystem_SSH2 extends WP_Filesystem_Base {
 	}
 
 	function put_contents($file, $contents, $mode = false ) {
-		$ret = file_put_contents( 'ssh2.sftp://' . $this->sftp_link . '/' . ltrim( $file, '/' ), $contents );
-
-		if ( $ret !== strlen( $contents ) )
-			return false;
+		$file = ltrim($file, '/');
+		$ret = file_put_contents('ssh2.sftp://' . $this->sftp_link . '/' . $file, $contents);
 
 		$this->chmod($file, $mode);
 
-		return true;
+		return false !== $ret;
 	}
 
 	function cwd() {
@@ -179,8 +184,8 @@ class WP_Filesystem_SSH2 extends WP_Filesystem_Base {
 		if ( ! $this->exists($file) )
 			return false;
 		if ( ! $recursive || ! $this->is_dir($file) )
-			return $this->run_command(sprintf('chgrp %s %s', escapeshellarg($group), escapeshellarg($file)), true);
-		return $this->run_command(sprintf('chgrp -R %s %s', escapeshellarg($group), escapeshellarg($file)), true);
+			return $this->run_command(sprintf('chgrp %o %s', $mode, escapeshellarg($file)), true);
+		return $this->run_command(sprintf('chgrp -R %o %s', $mode, escapeshellarg($file)), true);
 	}
 
 	function chmod($file, $mode = false, $recursive = false) {
@@ -201,22 +206,12 @@ class WP_Filesystem_SSH2 extends WP_Filesystem_Base {
 		return $this->run_command(sprintf('chmod -R %o %s', $mode, escapeshellarg($file)), true);
 	}
 
-	/**
-	 * Change the ownership of a file / folder.
-	 *
-	 * @since Unknown
-	 *
-	 * @param string $file    Path to the file.
-	 * @param mixed  $owner   A user name or number.
-	 * @param bool $recursive Optional. If set True changes file owner recursivly. Defaults to False.
-	 * @return bool Returns true on success or false on failure.
-	 */
-	function chown( $file, $owner, $recursive = false ) {
+	function chown($file, $owner, $recursive = false ) {
 		if ( ! $this->exists($file) )
 			return false;
 		if ( ! $recursive || ! $this->is_dir($file) )
-			return $this->run_command(sprintf('chown %s %s', escapeshellarg($owner), escapeshellarg($file)), true);
-		return $this->run_command(sprintf('chown -R %s %s', escapeshellarg($owner), escapeshellarg($file)), true);
+			return $this->run_command(sprintf('chown %o %s', $mode, escapeshellarg($file)), true);
+		return $this->run_command(sprintf('chown -R %o %s', $mode, escapeshellarg($file)), true);
 	}
 
 	function owner($file) {
