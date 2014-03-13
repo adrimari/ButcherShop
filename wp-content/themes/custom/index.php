@@ -1,31 +1,16 @@
-<?php get_header(); 
-		get_sidebar('left');
+<?php 
+get_header(); 
+get_sidebar('left');
 ?>
-
-
-				
-					<article class="middleSection">
+				<article class="middleSection">
 						<!--<div class="clear">
 							<img src="./includes/images/stars.png" alt="star division">
 						</div>-->
 						<section class="main-content">
 							<?php 
 							if (is_front_page()) {
-								?><img src="<?php echo (get_template_directory_uri()); ?>/includes/images/raw-steak.jpg" alt= "Steak Dish" width=100%><?php
-							}else{
-								if (have_posts()) :
-									while (have_posts()) : the_post();
-									the_content();
-									endwhile;
-								endif;
-							}
-							
-							?>
-							
-						</section>
-
-
-						<section class="slider" >
+								?><img src="<?php echo (get_template_directory_uri()); ?>/includes/images/raw-steak.jpg" alt= "Steak Dish" width=100%>
+								<section class="slider" >
 							<ul id="slideshow">
 								<li>
 									<article class="boxContainer">
@@ -70,12 +55,18 @@
 									<img src="<?php echo (get_template_directory_uri()); ?>/includes/images/raw-steak.jpg" alt= "Steak Dish" width=100%>
 								</li>
 							</ul>
+						</section><?php
+							}else{
+								if (have_posts()) :
+									while (have_posts()) : the_post();
+									the_content();
+									endwhile;
+								endif;
+							}?>
 						</section>
-
 					</article>
 
 <?php get_sidebar('right');?>
-					
-				</div>
-				<div>
+</div>
+<div class="clear dot"></div>
 <?php get_footer(); ?>

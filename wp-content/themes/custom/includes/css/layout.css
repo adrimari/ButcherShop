@@ -1,3 +1,4 @@
+/* General Layout */
 
 body {
 	font-size: medium;
@@ -11,11 +12,11 @@ h2 {
 h3 {
 	font-size: 120%;
 }
+h4{
+	font-size: 150%;
+}
 ul li {
 	font-size: 90%;
-}
-.note {
-	font-size: 85%;
 }
 a{
 	text-decoration: none;
@@ -31,7 +32,11 @@ a{
 	width:70%;
 	margin-left: 15%;
 }
-
+.clear{
+	clear: both;
+}
+/*--------------------------------------------------------------------------------------------------------*/
+/* Header */
 
 header{
 }
@@ -67,8 +72,6 @@ header{
 
 					
 				}
-
-
 
 				.icons a img{
 					position: absolute;
@@ -121,6 +124,8 @@ header{
 	a.menuFont:hover{
 		color: #000000;
 	}
+/*--------------------------------------------------------------------------------------------------------*/
+/* Navigation */
 
 	header nav{
 		width: 100%;
@@ -150,10 +155,6 @@ header{
 			list-style: none;
 
 		}
-			header nav li{
-
-			}
-
 			header nav li a {
 				float: left;
 				display: block;
@@ -166,47 +167,12 @@ header{
 				color: black;
 			}
 
-			header nav div ul li ul li{
-
-			}
-
-			header nav div ul li ul li a{
-				
-			}
-
-			#home #homeLi a{
-				
-			}
 			 #projects #projectLi a, #references #referenceLi a, #blog #blogLi a, #contact #contactLi a, #about #aboutLi a{
 				color: #673C17;
 			}
-		div.center{
-			width: 16%
-		}
-			div.center img{
-				width: 150%;
-				height: auto;
-				margin-left: -3em;
-				margin-top: -3em;
-			}
-		div.left, div.right{
-			width: 42%;
-		}
-		div.left, div.center{
-			float: left;			
-		}
-		div.right{
-			float: right;
-		}
-			header nav ul li.left {
 
-				float: left;
-			}
-
-			header nav ul li.right{
-				float: right;
-
-			}
+/*--------------------------------------------------------------------------------------------------------*/		
+/* Sidebar Left and Right*/
 
 .leftSection, .rightSection{
 	width: 15%;
@@ -251,7 +217,8 @@ header{
 				margin-left: 36%;
 				margin-top:1em;
 			}
-
+/*--------------------------------------------------------------------------------------------------------*/
+/* Main Content*/
 
 .middleSection{
 	width: 70%;
@@ -263,6 +230,134 @@ header{
 		padding: 1em 0em;
 		color: #7C4D25;
 	}
+/*--------------------------------------------------------------------------------------------------------*/
+/*Posts/Products and Categories*/
+
+#grid_item, .outer_product_container{
+	width: 100%;
+	background-color: #c89d64;
+	float: left;
+	padding: 1em 0em;
+}
+	.wpsc_categories {
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+		#category, .inner_product_container{
+			width: 30%;
+			margin: 0.9em;
+			margin-top:0;
+			float: left;
+		}
+			.prod_right_col{
+				width:100%;
+				/*background-color:white;*/
+				/*border:solid white 1px;*/
+				margin-top:0.5em;
+			}
+				
+		.cat_header, .prod_title{
+			font-size:110%;
+			border-bottom: 1px #997f61 solid;
+			margin-bottom: 0.5em;
+		}
+
+		.cat_header a, .prod_title a{
+			color: #ffffff;
+		}
+
+		.wpsc_category_grid_item img, .prod_img_container img{
+			width: 100%;
+			height: 12em;
+		}
+
+		#view_prod{
+			margin-top:0.5em;
+			background-color: #7c4d25;
+			width: 100%;
+			display:block;
+			border:1px solid #ffffff;
+			border-radius:5px;
+			padding: 2px;
+			white-space:nowrap;           /* force single line */
+			text-align: center;
+		}
+
+		#view_prod a{
+			color: #ffffff;
+			display: block;
+			text-transform: capitalize;
+		}
+
+		.wpsc_page_numbers{
+			height: 40px;
+			width: 100%;
+			float: left;
+			background-color: white;
+		}
+
+		#first, #next, #previous, #last, #pages{
+			background-color: #7c4d25;
+			display:block;
+			border:1px solid #ffffff;
+			border-radius:5px;
+			padding: 2px 0.5em;
+			white-space:nowrap;           /* force single line */
+			text-align: center;
+			float: left;
+			color: #ffffff;
+			display: block;
+			font-size: 20px !important;
+		}
+		
+		#first, #next, #previous, #last{
+			width: 15%;
+		}
+
+		#first a, #next a, #previous a, #last a, #pages a{
+			color: #ffffff;
+			display: block;
+			font-size: 20px !important;
+		}
+
+		/* Form */
+		.wpsc_variation_forms{
+			height: auto !important;
+			margin: 0;
+		}
+
+		.right{
+			float: left;
+			width: 100%;
+		}
+
+		.subtotal, .quantity, .total{
+			width: 33%;
+			float: left;
+		}
+
+		.variation_select{
+			float: left;
+			width: 50%;
+		}
+
+		.variation_name{
+			float: left;
+			width: 33%;
+		}
+
+		.totals_container{
+			margin-top: 0.5em;
+		}
+
+		.buy_button{
+			width: auto;
+			height: auto;
+		}
+/*--------------------------------------------------------------------------------------------------------*/	
+/* Slider*/
+
 	#slideshow{
 		width: 100%;
 		height: 30em;
@@ -283,8 +378,6 @@ header{
 				margin-left:2%;
 				margin-top:1%;
 				width: 30%;
-				/*height: 100%;*/
-				/*border:1px solid black;	*/
 			}
 			.boxContainer dl dt{
 				color: #ffffff;
@@ -314,18 +407,16 @@ header{
     				overflow:hidden;              /* don't show excess chars */
     				white-space:nowrap;           /* force single line */
    				}
-
-.clear{
-	clear: both;
-}
 .dot{
-	/*margin-top:8em;*/
-	background-image: url(../images/dot.png);
-	background-repeat: repeat-x;
-	background-position: left bottom;
-	width: 100%;
-	height: 3em;
+background-image: url(../images/dot.png);
+background-repeat: repeat-x;
+background-position: left bottom;
+width: 100%;
+height: 2em;
 }
+/*--------------------------------------------------------------------------------------------------------*/
+/* Footer*/
+
 footer{
 	clear: both;
 	font-size: 85%;	
